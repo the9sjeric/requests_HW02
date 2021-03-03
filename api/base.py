@@ -1,5 +1,6 @@
 import requests
 
+
 class Base:
 
     def __init__(self):
@@ -10,7 +11,9 @@ class Base:
         r = requests.get(url).json()
         self.token = r.get("access_token")
 
+        self.session = requests.Session()
+        self.session.params = {"access_token": self.token}
 
-    def send(self,*args,**kwargs):
-        s = requests(*args,**kwargs)
-        return s
+    def send(self, *args, **kwargs):
+        r = self.session.request(*args, **kwargs)
+        return r.json()

@@ -1,5 +1,4 @@
-import requests
-import pytest
+from test_case.test_requests import
 
 corpid = "wwd74df2f89ef2a560"
 secret = "NtB_n4sNtWVhcl05wk3YokSWauatjU21hFW0QlODdAs"

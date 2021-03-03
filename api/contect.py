@@ -1,38 +1,33 @@
 from api.base import Base
 
+
+
+
 class Contect(Base):
 
-        def add_menber(self, userid, name , mobile ,department:list):
+        def add_menber(self, userid: str, name: str, phone, department: list):
                 jsonadd = {
                         "userid": userid,
                         "name": name,
-                        "mobile": mobile",
+                        "mobile": phone,
                         "department": department
                 }
-                urladd = f"https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={self.token}"
+                urladd = f"https://qyapi.weixin.qq.com/cgi-bin/user/create?"
+                return self.send('post', urladd, json=jsonadd)
 
-                return self.send('post',urladd,json=jsonadd)
+        def modify_menber(self, userid: str, position:str):
+                jsonmodify = {
+                        "userid": userid,
+                        "position": position
+                }
+                urlmodify = f"https://qyapi.weixin.qq.com/cgi-bin/user/update?"
+                return self.send('post', urlmodify, json=jsonmodify)
 
-#
-# """修改用户信息"""
-# def test_modify_menber():
-#         jsonmodify = {
-#                 "userid": "reqadd001",
-#                 "position": "后台工程师"
-#         }
-#         urlmodify = f"https://qyapi.weixin.qq.com/cgi-bin/user/update?access_token={token}"
-#         rmodify = requests.post(url=urlmodify,json=jsonmodify)
-#         print(rmodify.text)
-#
-# """查询用户信息"""
-# userid = "reqadd001"
-# def test_query_menber():
-#         urlquery = f"https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token={token}&userid={userid}"
-#         rquery = requests.get(urlquery)
-#         print(rquery.text)
-#
-# """删除用户"""
-# def test_del_menber():
-#         urldel = f"https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token={token}&userid={userid}"
-#         rdel = requests.get(urldel)
-#         print(rdel.text)
+        def query_menber(self, userid:str):
+                urlquery = f"https://qyapi.weixin.qq.com/cgi-bin/user/get?userid={userid}"
+                return self.send('get', urlquery)
+
+
+        def del_menber(self,userid:str):
+                urldel = f"https://qyapi.weixin.qq.com/cgi-bin/user/delete?userid={userid}"
+                return self.send('get', urldel)

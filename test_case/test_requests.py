@@ -1,36 +1,23 @@
-import requests
+from api.contect import Contect
+import pytest
 
-"""新增用户"""
-def test_add_menber():
-        jsonadd = {
-                "userid": "reqadd001",
-                "name": "阿伊Q",
-                "mobile": "+86 13800000225",
-                "department": [1]
-        }
-        urladd = f"https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={token}"
-        radd = requests.post(url=urladd,json=jsonadd)
-        print(radd.text)
 
-"""修改用户信息"""
-def test_modify_menber():
-        jsonmodify = {
-                "userid": "reqadd001",
-                "position": "后台工程师"
-        }
-        urlmodify = f"https://qyapi.weixin.qq.com/cgi-bin/user/update?access_token={token}"
-        rmodify = requests.post(url=urlmodify,json=jsonmodify)
-        print(rmodify.text)
+class TestCase:
 
-"""查询用户信息"""
-userid = "reqadd001"
-def test_query_menber():
-        urlquery = f"https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token={token}&userid={userid}"
-        rquery = requests.get(urlquery)
-        print(rquery.text)
+        def setup(self):
+                self.contect = Contect()
 
-"""删除用户"""
-def test_del_menber():
-        urldel = f"https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token={token}&userid={userid}"
-        rdel = requests.get(urldel)
-        print(rdel.text)
+        @pytest.mark.parametrize("userid, name, phone,department",[("req999", "999", 13866669999, [1])])
+        def test_add_menber(self,userid, name, phone,department):
+                r = self.contect.add_menber(userid, name, phone, department)
+                assert r.get("errcode") == 0
+
+        @pytest.mark.parametrize("userid, position",[("req666","测试工程师001")])
+        def test_modify_menber(self,userid,position):
+                r = self.contect.modify_menber(userid,position)
+                assert r.get("errcode") == 0
+
+        @pytest.mark.parametrize("userid",[("req888")])
+        def test_del_member(self,userid):
+                r = self.contect.del_menber(userid)
+                assert r.get("errcode") == 0
